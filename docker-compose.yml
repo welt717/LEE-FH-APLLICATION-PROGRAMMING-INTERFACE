@@ -1,0 +1,51 @@
+services:
+  maria:
+    image: mariadb:latest
+    container_name: mariadb_container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: restpointdatabase
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - restbackend
+
+  redis:
+    image: redis:alpine
+    container_name: redis_container
+    restart: always
+    networks:
+      - restbackend
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend
+    restart: unless-stopped
+    command: npm run start:docker
+    env_file:
+      - .env
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    ports:
+      - '5000:5000'
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    depends_on:
+      - maria
+      - redis
+    networks:
+      - restbackend
+
+volumes:
+  mariadb_data:
+
+networks:
+  restbackend:
+    driver: bridge
