@@ -41,11 +41,9 @@ const registerMortuary = async (req, res) => {
   const validRateCategories = ['basic', 'premium'];
 
   if (!validRateCategories.includes(rate_category)) {
-    return res
-      .status(400)
-      .json({
-        error: 'Invalid mortuary rate category. Choose "basic" or "premium".',
-      });
+    return res.status(400).json({
+      error: 'Invalid mortuary rate category. Choose "basic" or "premium".',
+    });
   }
 
   try {
@@ -80,12 +78,10 @@ const updateMortuaryChargeForSingle = async (req, res) => {
   const validRateCategories = ['basic', 'premium'];
 
   if (!deceased_id || !validRateCategories.includes(rate_category)) {
-    return res
-      .status(400)
-      .json({
-        error:
-          'Invalid or missing deceased_id or mortuary rate category. Choose "basic" or "premium".',
-      });
+    return res.status(400).json({
+      error:
+        'Invalid or missing deceased_id or mortuary rate category. Choose "basic" or "premium".',
+    });
   }
 
   const rates = {
@@ -110,11 +106,9 @@ const updateMortuaryChargeForSingle = async (req, res) => {
     });
   } catch (err) {
     console.error('❌ Error updating mortuary charge:', err);
-    res
-      .status(500)
-      .json({
-        error: 'Failed to update mortuary charge for the specified deceased.',
-      });
+    res.status(500).json({
+      error: 'Failed to update mortuary charge for the specified deceased.',
+    });
   }
 };
 
@@ -134,12 +128,10 @@ router.post('/update-mortuary-rate', async (req, res) => {
     !rateCategory ||
     (rateCategory !== 'basic' && rateCategory !== 'premium')
   ) {
-    return res
-      .status(400)
-      .json({
-        error:
-          'Invalid or missing mortuary rate category. Choose "basic" or "premium".',
-      });
+    return res.status(400).json({
+      error:
+        'Invalid or missing mortuary rate category. Choose "basic" or "premium".',
+    });
   }
 
   try {

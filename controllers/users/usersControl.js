@@ -290,13 +290,11 @@ const deleteUser = asyncHandler(async (req, res) => {
       .json({ success: true, message: 'User deleted successfully' });
   } catch (error) {
     console.error('Error deleting user:', error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: 'Failed to delete user',
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: 'Failed to delete user',
+      error: error.message,
+    });
   }
 });
 
@@ -304,22 +302,18 @@ const deleteUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
   const ip = req.ip || req.connection.remoteAddress;
   if (isIpBlocked(ip)) {
-    return res
-      .status(429)
-      .json({
-        success: false,
-        message: 'Too many failed attempts. Try again later.',
-      });
+    return res.status(429).json({
+      success: false,
+      message: 'Too many failed attempts. Try again later.',
+    });
   }
 
   const { identifier, password } = req.body;
   if (!identifier || !password) {
-    return res
-      .status(400)
-      .json({
-        success: false,
-        message: 'Username/email and password required.',
-      });
+    return res.status(400).json({
+      success: false,
+      message: 'Username/email and password required.',
+    });
   }
 
   let user;

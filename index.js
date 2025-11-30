@@ -14,8 +14,6 @@ require('source-map-support').install();
 
 const { Server: SocketIOServer } = require('socket.io');
 
-
-
 // --- Local helpers ---
 const { initDB, safeQuery } = require('./configurations/sqlConfig/db');
 const { getHealthStatus } = require('./utilities/heathWarning/health');
@@ -34,8 +32,6 @@ const {
   updatePerformanceStats,
   getPerformanceStats,
 } = require('./services/performanceMonitor');
-
-
 
 // ----------------- Main Server Error Logging -----------------
 const {
@@ -66,10 +62,7 @@ const monitor = statusMonitor({ path: '/status' });
 app.use(monitor);
 
 // ----------------- Request Logging Middleware -----------------
-const {
-  requestLogger,
-  requestStats,
-} = require('./middlewares/requestLogger');
+const { requestLogger, requestStats } = require('./middlewares/requestLogger');
 app.use(requestLogger);
 
 app.use(express.json({ limit: '5mb' }));
@@ -123,7 +116,11 @@ app.get('/api/v1/restpoint/analytics/requests', (req, res) => {
       requestsByHour: requestStats.requestsByHour,
       uniqueIPs: Object.keys(requestStats.requestsByIP).length,
       // Calculate average response time across all endpoints
-      averageResponseTime: Object.values(requestStats.responseTimes).reduce((acc, curr) => acc + curr.average, 0) / (Object.keys(requestStats.responseTimes).length || 1),
+      averageResponseTime:
+        Object.values(requestStats.responseTimes).reduce(
+          (acc, curr) => acc + curr.average,
+          0,
+        ) / (Object.keys(requestStats.responseTimes).length || 1),
     };
 
     res.json({
@@ -152,7 +149,7 @@ app.get('/api/v1/restpoint/analytics/requests', (req, res) => {
 
 app.get('/api/v1/restpoint/analytics/requests/recent', (req, res) => {
   // Not implemented with in-memory stats for now, or could read from winston file
-  res.json({ success: true, message: "Use logs endpoint for recent requests" });
+  res.json({ success: true, message: 'Use logs endpoint for recent requests' });
 });
 
 app.get('/api/v1/restpoint/analytics/requests/ips', (req, res) => {
@@ -182,7 +179,7 @@ app.get('/api/v1/restpoint/analytics/requests/ips', (req, res) => {
 
 app.get('/api/v1/restpoint/analytics/requests/logs', (req, res) => {
   // Winston logs are in JSON format, can be read similarly if needed
-   res.json({ success: true, message: "Check server logs directly" });
+  res.json({ success: true, message: 'Check server logs directly' });
 });
 
 // ----------------- Performance Monitoring Routes -----------------
@@ -509,20 +506,16 @@ const { activeMonitoringAssist } = createActiveMonitoringAssist(
   broadcastActiveMonitoringAlert,
 );
 
-
-
 app.get('/api/v1/restpoint/notifications', async (req, res) => {
   try {
     const notifications = await safeQuery(
       `SELECT * FROM notifications ORDER BY created_at DESC`,
     );
-    res
-      .status(200)
-      .json({
-        success: true,
-        count: notifications.length,
-        data: notifications,
-      });
+    res.status(200).json({
+      success: true,
+      count: notifications.length,
+      data: notifications,
+    });
   } catch (err) {
     logMainServerError(err, 'Fetching notifications failed');
     res
@@ -530,8 +523,6 @@ app.get('/api/v1/restpoint/notifications', async (req, res) => {
       .json({ success: false, message: 'Error fetching notifications' });
   }
 });
-
-
 
 // ----------------- Import Routes -----------------
 const routeBase = '/api/v1/restpoint';
@@ -579,7 +570,7 @@ app.use((req, res) => res.status(404).json({ message: ' Route not found' }));
     });
     console.log('📊 Performance monitoring enabled');
     console.log(
-      '📝 Request logging enabled - All requests stored in logs directory'
+      '📝 Request logging enabled - All requests stored in logs directory',
     );
   });
 })();

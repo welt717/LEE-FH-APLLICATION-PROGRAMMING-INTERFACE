@@ -11,11 +11,9 @@ const currencyUpdate = asyncHandler(async (req, res) => {
   const { deceasedId, amount, currency } = req.body;
 
   if (!deceasedId || !amount || !currency) {
-    return res
-      .status(400)
-      .json({
-        message: 'All fields are required: deceasedId, amount, currency',
-      });
+    return res.status(400).json({
+      message: 'All fields are required: deceasedId, amount, currency',
+    });
   }
 
   // only allow specific currencies

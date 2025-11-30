@@ -73,11 +73,9 @@ const uploadDocument = async (req, res) => {
     ];
 
     if (!allowedMimeTypes.includes(file.mimetype)) {
-      return res
-        .status(400)
-        .json({
-          message: 'Invalid file type. Only PDF and image files are allowed.',
-        });
+      return res.status(400).json({
+        message: 'Invalid file type. Only PDF and image files are allowed.',
+      });
     }
 
     const uploadDir = path.join(

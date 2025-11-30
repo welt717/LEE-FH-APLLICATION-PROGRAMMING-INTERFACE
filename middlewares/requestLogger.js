@@ -40,7 +40,7 @@ const requestLogger = (req, res, next) => {
 
     // Update stats
     requestStats.totalRequests++;
-    
+
     // Count by method
     requestStats.requestsByMethod[req.method] =
       (requestStats.requestsByMethod[req.method] || 0) + 1;
@@ -60,18 +60,21 @@ const requestLogger = (req, res, next) => {
       (requestStats.requestsByIP[clientIP] || 0) + 1;
 
     // Count by status
-    requestStats.requestsByStatus[res.statusCode] = 
+    requestStats.requestsByStatus[res.statusCode] =
       (requestStats.requestsByStatus[res.statusCode] || 0) + 1;
 
     // Track response times per endpoint
     if (!requestStats.responseTimes[endpoint]) {
-      requestStats.responseTimes[endpoint] = { count: 0, totalTime: 0, average: 0 };
+      requestStats.responseTimes[endpoint] = {
+        count: 0,
+        totalTime: 0,
+        average: 0,
+      };
     }
     const rt = requestStats.responseTimes[endpoint];
     rt.count++;
     rt.totalTime += duration;
     rt.average = Math.round(rt.totalTime / rt.count);
-
 
     const logData = {
       ip: clientIP,

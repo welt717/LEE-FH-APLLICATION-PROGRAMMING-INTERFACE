@@ -7,11 +7,9 @@ const assignColdRoom = asyncHandler(async (req, res) => {
 
   // Validate required fields
   if (!deceased_id || !cold_room_number || !tray_number) {
-    return res
-      .status(400)
-      .json({
-        error: 'deceased_id, cold_room_number, and tray_number are required.',
-      });
+    return res.status(400).json({
+      error: 'deceased_id, cold_room_number, and tray_number are required.',
+    });
   }
 
   try {

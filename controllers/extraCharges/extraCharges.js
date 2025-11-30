@@ -43,12 +43,10 @@ async function addExtraCharge(req, res) {
       updated_at,
     ]);
 
-    return res
-      .status(201)
-      .json({
-        message: 'Extra charge added successfully',
-        id: result.insertId,
-      });
+    return res.status(201).json({
+      message: 'Extra charge added successfully',
+      id: result.insertId,
+    });
   } catch (error) {
     console.error('Error adding extra charge:', error);
     return res.status(500).json({ message: 'Internal server error' });
